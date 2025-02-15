@@ -4,17 +4,16 @@ import pandas as pd
 
 
 def get_db_connection():
-   secrets = st.secrets["connections"] 
 
-conn = mysql.connector.connect(
-   host=secrets["gateway01.us-west-2.prod.aws.tidbcloud.com"],
-   user=secrets["2b7jibPEQ1KmgLs.root"],
-   password=secrets["RncdgdnrSS9NzYzI"],
-   database=secrets["zomato"],
-   port=int(secrets["4000"]), 
-   ssl_ca=secrets["isrgrootx1.pem"],  
-   use_pure=True)
-   
+    conn = mysql.connector.connect(
+       host=st.secrets["connections"]["host"],
+       user=st.secrets["connections"]["user"],
+       password=st.secrets["connections"]["password"],
+       database=st.secrets["connections"]["database"],
+       port=int(st.secrets["connections"]["port"]),
+       ssl_ca=st.secrets["connections"]["ssl_ca"],  
+       use_pure=True )
+
 queries = {
     "Total Customers": "SELECT COUNT(*) FROM customers;",
 
