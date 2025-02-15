@@ -103,6 +103,12 @@ queries = {
     GROUP BY r.restaurant_id, r.restaurant_name 
     ORDER BY total_revenue DESC;
     """,
+    
+   "Count of Different Payment Methods": """ 
+    SELECT payment_mode, COUNT(*) AS total_count 
+    FROM orders 
+    GROUP BY payment_mode; 
+    """,
 
     "Highest Rated Restaurant": """ 
         SELECT restaurant_name, restaurant_rating 
