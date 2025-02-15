@@ -23,6 +23,7 @@ if conn.is_connected():
 else:
    st.error("Connection failed")
    return None
+  
 except mysql.connector.Error as err:
    st.error(f"Connection Error: {err}")
    return None
