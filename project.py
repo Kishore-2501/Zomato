@@ -156,7 +156,7 @@ queries = {
 
 }
 
-st.title("SQL Queries")
+st.title("Zomato-SQL Queries")
 
 selected_query = st.selectbox("Select a query to execute:", list(queries.keys()))
 
