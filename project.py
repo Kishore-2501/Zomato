@@ -89,6 +89,14 @@ queries = {
         FROM orders 
         WHERE status = 'Cancelled';
     """,
+    
+     "Most Used Vehicle Type for Deliveries": """ 
+    SELECT vehicle_type, COUNT(*) AS total_deliveries 
+    FROM deliveries 
+    GROUP BY vehicle_type 
+    ORDER BY total_deliveries DESC 
+    LIMIT 1; 
+    """,
 
     "Premium vs Non-Premium Customers": """ 
         SELECT is_premium, COUNT(*) AS total_customers 
