@@ -25,8 +25,6 @@ def get_db_connection():
             st.error("Connection failed")
             return None
 
-st.image("C:/Users/kisho/Downloads/Zomato-logo.png",width=200)
-
 queries = {
     "Total Customers": "SELECT COUNT(*) FROM customers;",
 
