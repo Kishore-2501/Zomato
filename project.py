@@ -7,15 +7,13 @@ import pandas as pd
 # st.write("Checking database connection...")
 
 def get_db_connection():
-    # try:
-        conn = mysql.connector.connect(
-            host="gateway01.us-west-2.prod.aws.tidbcloud.com",
-            user="2b7jibPEQ1KmgLs.root",
-            port=4000,
-            password="RncdgdnrSS9NzYzI",
-            database="zomato",
-            ssl_ca="C:/Users/kisho/Downloads/isrgrootx1.pem"
-,
+            conn = mysql.connector.connect(
+            host=st.secrets["connections"]["gateway01.us-west-2.prod.aws.tidbcloud.com"],
+            user=st.secrets["connections"]["2b7jibPEQ1KmgLs.root"],
+            password=st.secrets["connections"]["RncdgdnrSS9NzYzI"],
+            database=st.secrets["connections"]["zomato"],
+            port=st.secrets["connections"]["4000"],
+            ssl_ca=st.secrets["connections"]["C:/Users/kisho/Downloads/isrgrootx1.pem"],
             use_pure=True
         )
         if conn.is_connected():
