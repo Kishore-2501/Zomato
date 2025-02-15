@@ -13,6 +13,12 @@ def get_db_connection():
        port=int(st.secrets["connections"]["port"]),
        ssl_ca=st.secrets["connections"]["ssl_ca"],  
        use_pure=True )
+    if conn.is_connected():
+            st.success("Connected successfully")
+            return conn
+        else:
+            st.error("Connection failed")
+            return None
 
 queries = {
     "Total Customers": "SELECT COUNT(*) FROM customers;",
