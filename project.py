@@ -16,7 +16,7 @@ def get_db_connection():
     if conn.is_connected():
             st.success("Connected successfully")
             return conn
-        else:
+    else:
             st.error("Connection failed")
             return None
 
