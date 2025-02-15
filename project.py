@@ -7,6 +7,7 @@ import pandas as pd
 # st.write("Checking database connection...")
 
 def get_db_connection():
+  try:
             conn = mysql.connector.connect(
             host=st.secrets["connections"]["gateway01.us-west-2.prod.aws.tidbcloud.com"],
             user=st.secrets["connections"]["2b7jibPEQ1KmgLs.root"],
@@ -22,6 +23,9 @@ def get_db_connection():
         else:
             st.error("Connection failed")
             return None
+except mysql.connector.Error as err:
+  st.error(f"❌ Connection Error: {err}")
+  return None
 
 queries = {
     "Total Customers": "SELECT COUNT(*) FROM customers;",
