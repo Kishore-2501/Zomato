@@ -5,7 +5,7 @@ import pandas as pd
 
 def get_db_connection():
    conn = mysql.connector.connect(
-   host=st.secrets["connections"]["gateway01.us-west-2.prod.aws.tidbcloud.com"],
+   host=st.secrets["connections"]["host"],
    user=st.secrets["connections"]["2b7jibPEQ1KmgLs.root"],
    password=st.secrets["connections"]["RncdgdnrSS9NzYzI"],
    database=st.secrets["connections"]["zomato"],
