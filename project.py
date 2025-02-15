@@ -3,11 +3,7 @@ import mysql.connector
 import pandas as pd
 
 
-# st.title("Zomato Database Connection Test") 
-# st.write("Checking database connection...")
-
 def get_db_connection():
-  try:
    conn = mysql.connector.connect(
    host=st.secrets["connections"]["gateway01.us-west-2.prod.aws.tidbcloud.com"],
    user=st.secrets["connections"]["2b7jibPEQ1KmgLs.root"],
@@ -16,17 +12,6 @@ def get_db_connection():
    port=st.secrets["connections"]["4000"],
    ssl_ca=st.secrets["connections"]["C:/Users/kisho/Downloads/isrgrootx1.pem"],
    use_pure=True )
-        
-if conn.is_connected():
-   st.success("Connected successfully")
-   return conn
-else:
-   st.error("Connection failed")
-   return None
-  
-except mysql.connector.Error as err:
-   st.error(f"Connection Error: {err}")
-   return None
 
 queries = {
     "Total Customers": "SELECT COUNT(*) FROM customers;",
