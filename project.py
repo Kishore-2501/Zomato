@@ -17,15 +17,16 @@ def get_db_connection():
             ssl_ca=st.secrets["connections"]["C:/Users/kisho/Downloads/isrgrootx1.pem"],
             use_pure=True
         )
+
         if conn.is_connected():
-            st.success("Connected successfully")
+            st.success("✅ Connected successfully")
             return conn
         else:
-            st.error("Connection failed")
+            st.error("❌ Connection failed")
             return None
-except mysql.connector.Error as err:
-  st.error(f"❌ Connection Error: {err}")
-  return None
+    except mysql.connector.Error as err:
+        st.error(f"❌ Connection Error: {err}")
+        return None
 
 queries = {
     "Total Customers": "SELECT COUNT(*) FROM customers;",
