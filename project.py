@@ -111,18 +111,13 @@ queries = {
         LIMIT 1;
     """,
 
-    "Customers with No Orders": """ 
-        SELECT c.customer_id, c.customer_name 
-        FROM customers c 
-        LEFT JOIN orders o ON c.customer_id = o.customer_id 
-        WHERE o.customer_id IS NULL;
-    """,
-
-    "Restaurants with No Orders": """ 
-        SELECT r.restaurant_id, r.restaurant_name 
-        FROM restaurants r 
-        LEFT JOIN orders o ON r.restaurant_id = o.restaurant_id 
-        WHERE o.restaurant_id IS NULL;
+    "Top 5 Fastest Deliveries": """ 
+        SELECT o.order_id, r.restaurant_name, d.delivery_time 
+        FROM deliveries d 
+        JOIN orders o ON d.order_id = o.order_id 
+        JOIN restaurants r ON o.restaurant_id = r.restaurant_id 
+        ORDER BY d.delivery_time ASC 
+        LIMIT 5;
     """,
 
     "Total Discount Given": """ 
