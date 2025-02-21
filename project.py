@@ -176,3 +176,109 @@ if st.button("Run Query"):
         st.write("### Query Result:")
         df = pd.DataFrame(data, columns=[desc[0] for desc in cursor.description])
         st.dataframe(df)
+def add_delivery_person(name, contact_number, vehicle_type, location):
+    conn = get_db_connection()
+    if conn:
+        try:
+            cursor = conn.cursor()
+            cursor.execute(
+                "INSERT INTO delivery_person (name, contact_number, vehicle_type, location) VALUES (%s, %s, %s, %s)",
+                (name, contact_number, vehicle_type, location)
+            )
+            conn.commit()
+            st.success("New Delivery Person Added Successfully")
+        except Exception as e:
+            st.error(f"Error Adding Delivery Person: {e}")
+        finally:
+            conn.close()
+
+def get_all_delivery_person():
+    conn = get_db_connection()
+    if conn:
+        try:
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM delivery_person")
+            data = cursor.fetchall()
+            return data
+        except Exception as e:
+            st.error(f"Error Fetching Data: {e}")
+            return []
+        finally:
+            conn.close()
+
+def update_delivery_person(delivery_person_id, name, contact_number, vehicle_type, location):
+    conn = get_db_connection()
+    if conn:
+        try:
+            cursor = conn.cursor()
+            cursor.execute(
+                "UPDATE delivery_person SET name=%s, contact_number=%s, vehicle_type=%s, location=%s WHERE delivery_person_id=%s",
+                (name, contact_number, vehicle_type, location, delivery_person_id)
+            )
+            conn.commit()
+            st.success("Delivery Person Updated Successfully")
+        except Exception as e:
+            st.error(f"Error Updating Delivery Person: {e}")
+        finally:
+            conn.close()
+
+def delete_delivery_person(delivery_person_id):
+    conn = get_db_connection()
+    if conn:
+        try:
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM delivery_person WHERE delivery_person_id=%s", (delivery_person_id,))
+            conn.commit()
+            st.success("Delivery Person Deleted Successfully")
+        except Exception as e:
+            st.error(f"Error Deleting Delivery Person: {e}")
+        finally:
+            conn.close()
+
+
+st.title("CRUD")
+
+operation = st.radio("Choose Operation", ["Create", "Read", "Update", "Delete"])
+
+if operation == "Create":
+    name = st.text_input("Full Name")
+    contact_number = st.text_input("Contact Number")
+    vehicle_type = st.selectbox("Vehicle Type", ["Bike", "Car", "Scooter"])
+    location = st.text_input("Location")
+
+    if st.button("Create Delivery Person"):
+        if name and contact_number and vehicle_type and location:
+            add_delivery_person(name, contact_number, vehicle_type, location)
+            st.rerun() 
+        else:
+            st.error("All fields are required")
+
+
+elif operation == "Read":
+    data = get_all_delivery_person()
+    if data:
+        df = pd.DataFrame(data, columns=["ID", "Name", "Contact Number", "Vehicle Type", "Location"])
+        st.dataframe(df)
+    else:
+        st.warning("No delivery persons found.")
+
+elif operation == "Update":
+    delivery_person_id = st.number_input("Enter Delivery Person ID", min_value=1, step=1)
+    name = st.text_input("New Name")
+    contact_number = st.text_input("New Contact Number")
+    vehicle_type = st.selectbox("New Vehicle Type", ["Bike", "Car", "Scooter"])
+    location = st.text_input("New Location")
+
+    if st.button("Update Delivery Person"):
+        if name and contact_number and vehicle_type and location:
+            update_delivery_person(delivery_person_id, name, contact_number, vehicle_type, location)
+            st.rerun()
+        else:
+            st.error("All fields are required")
+
+elif operation == "Delete":
+    delivery_person_id = st.number_input("Enter Delivery Person ID to Delete", min_value=1, step=1)
+
+    if st.button("Delete Delivery Person"):
+        delete_delivery_person(delivery_person_id)
+        st.rerun()
