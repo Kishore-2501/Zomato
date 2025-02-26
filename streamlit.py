@@ -234,51 +234,82 @@ def delete_delivery_person(delivery_person_id):
             st.error(f"Error Deleting Delivery Person: {e}")
         finally:
             conn.close()
+option_list = ["Create", "Read", "Update", "Delete", "None"]
+option = st.sidebar.selectbox("Select Operation", option_list, index=option_list.index("None"))
 
+if option == "Create":
+    st.title("CRUD OPERATION WITH MYSQL")
+    st.subheader("Create a Delivery Person Record")
+    
+    delivery_person_id = st.number_input("Enter ID", min_value=1, step=1)
+    name = st.text_input("Enter Name")
+    contact_number = st.text_input("Enter Contact Number")
+    vehicle_type = st.selectbox("Select Vehicle Type", ["Bike", "Car", "Scooter"])
+    location = st.text_input("Enter Location")
 
-st.title("CRUD")
-
-operation = st.radio("Choose Operation", ["Create", "Read", "Update", "Delete"])
-
-if operation == "Create":
-    name = st.text_input("Full Name")
-    contact_number = st.text_input("Contact Number")
-    vehicle_type = st.selectbox("Vehicle Type", ["Bike", "Car", "Scooter"])
-    location = st.text_input("Location")
-
-    if st.button("Create Delivery Person"):
-        if name and contact_number and vehicle_type and location:
-            add_delivery_person(name, contact_number, vehicle_type, location)
-            st.rerun() 
+    if st.button("Create"):
+        if delivery_person_id and name and contact_number and vehicle_type and location:
+            con = get_db_connection()
+            cur = con.cursor()
+            sql = "INSERT INTO delivery_person (delivery_person_id, name, contact_number, vehicle_type, location) VALUES (%s, %s, %s, %s, %s)"
+            val = (delivery_person_id, name, contact_number, vehicle_type, location)
+            cur.execute(sql, val)
+            con.commit()
+            con.close()
+            st.success("New Delivery Person Added Successfully")
         else:
-            st.error("All fields are required")
+            st.error("All fields are required.")
 
+elif option == "Read":
+    st.title("CRUD OPERATION WITH MYSQL")
+    st.subheader("Show All Delivery Persons")
 
-elif operation == "Read":
-    data = get_all_delivery_person()
-    if data:
-        df = pd.DataFrame(data, columns=["ID", "Name", "Contact Number", "Vehicle Type", "Location"])
-        st.dataframe(df)
-    else:
-        st.warning("No delivery persons found.")
+    con = get_db_connection()
+    cur = con.cursor()
+    cur.execute("SELECT * FROM delivery_person")
+    res = cur.fetchall()
 
-elif operation == "Update":
-    delivery_person_id = st.number_input("Enter Delivery Person ID", min_value=1, step=1)
-    name = st.text_input("New Name")
-    contact_number = st.text_input("New Contact Number")
-    vehicle_type = st.selectbox("New Vehicle Type", ["Bike", "Car", "Scooter"])
-    location = st.text_input("New Location")
+    columns = [i[0] for i in cur.description]  
+    show_df = pd.DataFrame(res, columns=columns)
+    
+    con.close()
+    st.dataframe(show_df)
 
-    if st.button("Update Delivery Person"):
+elif option == "Update":
+    st.title("CRUD OPERATION WITH MYSQL")
+    st.subheader("Update Delivery Person Record")
+
+    delivery_person_id = st.number_input("Enter ID", min_value=1)
+    name = st.text_input("Enter New Name")
+    contact_number = st.text_input("Enter New Contact Number")
+    vehicle_type = st.selectbox("Select New Vehicle Type", ["Bike", "Car", "Scooter"])
+    location = st.text_input("Enter New Location")
+
+    if st.button("Update"):
         if name and contact_number and vehicle_type and location:
-            update_delivery_person(delivery_person_id, name, contact_number, vehicle_type, location)
-            st.rerun()
+            con = get_db_connection()
+            cur = con.cursor()
+            sql = "UPDATE delivery_person SET name=%s, contact_number=%s, vehicle_type=%s, location=%s WHERE delivery_person_id=%s"
+            val = (name, contact_number, vehicle_type, location, delivery_person_id)
+            cur.execute(sql, val)
+            con.commit()
+            con.close()
+            st.success("Delivery Person Updated Successfully")
         else:
-            st.error("All fields are required")
+            st.error("All fields are required.")
 
-elif operation == "Delete":
-    delivery_person_id = st.number_input("Enter Delivery Person ID to Delete", min_value=1, step=1)
+elif option == "Delete":
+    st.title("CRUD OPERATION WITH MYSQL")
+    st.subheader("Delete Delivery Person Record")
 
-    if st.button("Delete Delivery Person"):
-        delete_delivery_person(delivery_person_id)
-        st.rerun()
+    delivery_person_id = st.number_input("Enter ID to Delete", min_value=1, step=1)
+
+    if st.button("Delete"):
+        con = get_db_connection()
+        cur = con.cursor()
+        sql = "DELETE FROM delivery_person WHERE delivery_person_id = %s"
+        val = (delivery_person_id,)
+        cur.execute(sql, val)
+        con.commit()
+        con.close()
+        st.success("Delivery Person Deleted Successfully")
