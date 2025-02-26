@@ -5,7 +5,7 @@ This project focuses on analyzing food delivery data from Zomato using **Python,
 
 ## Features
 - **Database Management**: Connects to a TiDB Cloud MySQL database.
-- **Data Generation**: Uses `Faker` to create synthetic datasets for customers, orders, restaurants, and deliveries.
+- **Data Generation**: Uses Faker to create synthetic datasets for customers, orders, restaurants, and deliveries.
 - **Data Analysis**: SQL queries extract insights such as peak order hours, top customers, and popular cuisines.
 - **Interactive Dashboard**: A Streamlit app enables users to explore key metrics and execute queries dynamically.
 - **Real-Time Analytics**: Incorporates live data updates for monitoring orders and deliveries.
@@ -23,8 +23,8 @@ This project focuses on analyzing food delivery data from Zomato using **Python,
    pip install -r requirements.txt
    
 2. **Set Up Database:**
-   - Create a MySQL database named `zomato`.
-   - Run `zomato.py` to generate data and insert it into the database.
+   Create a MySQL database named zomato.
+   Run zomato.py to generate data and insert it into the database.
 3. **Run the Streamlit App:**
 
    streamlit run project.py
